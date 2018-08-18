@@ -1,0 +1,78 @@
+namespace org.acme.shipping.perishable
+
+enum ProductType {
+  o BANANAS
+  o APPLES
+  o PEARS
+  o PEACHES
+  o COFFEE
+}
+
+enum ShipmentStatus {
+  o CREATED
+  o IN_TRANSIT
+  o ARRIVED
+}
+
+abstract transaction ShipmentTransaction {
+  --> Shipment shipment
+}
+
+transaction TemperatureReading extends ShipmentTransaction {
+  o Double centigrade
+}
+
+transaction ShipmentReceived extends ShipmentTransaction {
+
+}
+
+asset Shipment identified by shipmentId {
+  o String shipmentId
+  o ProductType type
+  o ShipmentStatus status
+  o Long unitCount
+  o TemperatureReading[] temperatureReadings optional
+  --> Contract contract
+}
+
+asset Contract identified by contractId {
+  o String contractId
+  --> Grower grower
+  --> Shipper shipper
+  --> Importer importer
+  o DateTime arrivaleDateTime
+  o Double unitPrice
+  o Double minTemperature
+  o Double maxTemperature
+  o Double minPenaltyFactor
+  o Double maxPenaltyFactor
+}
+
+concept Address {
+  o String city optional
+  o String country
+  o String street optional
+  o String zip optional
+}
+
+abstract participant Business identified by email {
+  o String email
+  o Address address
+  o Double accountBalance
+}
+
+participant Grower extends Business {
+
+}
+
+participant Shipper  extends Business {
+  
+}
+
+participant Importer extends Business {
+  
+}
+
+transaction SetupDemo {
+  
+}
